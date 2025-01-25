@@ -1,30 +1,44 @@
 #!/bin/bash
 
+# Define the root directory where your configuration files are stored.
+# By default, it is set to $HOME/.config/linuxsetup
 SETUP_DIR="$HOME/.config/linuxsetup"
 
-create_symlink() {
-  local SOURCE="$1"
-  local TARGET="$2"
+echo -e "\nStarting configuration!\n"
 
-  if [ -L "$TARGET" ]; then
-      echo "Symbolic link already configured: $TARGET"
+# Function to create a symbolic link
+create_symlink() {
+    local SOURCE="$1"   # The source file or directory (from SETUP_DIR)
+    local TARGET="$2"   # The target file or directory (where the link will be created)
+
+    # Check if the symbolic link already exists at the target location
+    if [ -L "$TARGET" ]; then
+        echo -e "The symbolic link already exists: $TARGET\n"
     else
-      if [ -e "$SOURCE" ]; then
-        ln -s "$SOURCE" "$TARGET"
-        echo "Link simbolico configurado: $TARGET -> $SOURCE"
-      else
-        echo "The source file or directory does not exist: $SOURCE"
-      fi
-  fi
+        # If the symbolic link doesn't exist, check if the source file/directory exists
+        if [ -e "$SOURCE" ]; then
+            # If the source exists, create the symbolic link
+            ln -s "$SOURCE" "$TARGET"
+            echo -e "Symbolic link created: $TARGET -> $SOURCE\n"
+        else
+            # If the source file/directory doesn't exist, print an error message
+            echo -e "The source file or directory does not exist: $SOURCE\n"
+        fi
+    fi
 }
 
+# Define the configuration files and directories you want to set up
+# The keys are the source files/directories, and the values are the target locations for the symbolic links
 declare -A links=(
-    ["$SETUP_DIR/alacritty"]="$HOME/.config/alacritty"
+    ["$SETUP_DIR/alacritty"]="$HOME/.config/alacritty"  # Alacritty config file
+    # Add more files or directories as needed, following the same pattern
 )
 
+# Loop through the links and create the symbolic links for each configuration file
 for SOURCE in "${!links[@]}"; do
-  TARGET="${links[$SOURCE]}"
-  create_symlink "$SOURCE" "$TARGET"
+    TARGET="${links[$SOURCE]}"   # The target location for the symbolic link
+    create_symlink "$SOURCE" "$TARGET"  # Call the function to create the link
 done
 
-echo "Setup completed!!!"
+echo -e "Setup complete!\n"
+

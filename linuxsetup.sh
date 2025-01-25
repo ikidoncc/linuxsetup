@@ -11,6 +11,13 @@ create_symlink() {
 	local SOURCE="$1" # The source file or directory (from SETUP_DIR)
 	local TARGET="$2" # The target file or directory (where the link will be created)
 
+	local TARGET_DIR
+	TARGET_DIR=$(dirname "$TARGET")
+	if [ ! -d "$TARGET_DIR" ]; then
+		mkdir -p "$TARGET_DIR"
+		echo -e "Created parent directory: $TARGET_DIR"
+	fi
+
 	# Check if the symbolic link already exists at the target location
 	if [ -L "$TARGET" ]; then
 		echo -e "The symbolic link already exists: $TARGET"
@@ -50,8 +57,6 @@ if pgrep -x "tmux" >/dev/null; then
 	# If tmux is running, reload the tmux configuration
 	tmux source-file ~/.tmux.conf
 	echo -e "Tmux configuration reloaded.\n"
-else
-	echo -e "Tmux is not running, no need to reload.\n"
 fi
 
 echo -e "Setup complete!\n"

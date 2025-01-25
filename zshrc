@@ -19,6 +19,3 @@ alias gc="git commit"
 alias gcA="git commit --amend --no-edit"
 alias gp="git push"
 alias gr="git restore"
-
-export TERM="xterm-256color"
-export NVIM_TUI_ENABLE_TRUE_COLOR=1

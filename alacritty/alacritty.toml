@@ -1,9 +1,5 @@
-[general]
-import = ["~/.config/alacritty/rose-pine-moon.toml"]
-
 [window]
 decorations			= "None"
-padding					= { x = 2, y = 2 }
 dynamic_padding	= true
 opacity					= 0.8
 startup_mode		= "Fullscreen"
